@@ -128,10 +128,11 @@
   }
   .stage::-webkit-scrollbar { display: none; }
   .screen {
-    height: 100vh;
+    height: 100%;
     scroll-snap-align: start;
     position: relative;
     overflow: hidden;
+	background: #0b0b0f;
   }
   .stage:-webkit-full-screen,
   .stage:-moz-full-screen,
@@ -444,14 +445,14 @@ document.addEventListener('visibilitychange', async () => {
   (function () {
     var stage = document.getElementById('stage');
     if (!stage) return;
-    var idx = 0;                 // 0 = analog clock, 1 = digital time
+    var screens = stage.querySelectorAll('.screen');
+	  var idx = 0;                 // 0 = analog clock, 1 = digital time
     var lock = false;
 
-    function go(to) {
-      to = to < 0 ? 0 : (to > 1 ? 1 : to);
+    to = to < 0 ? 0 : (to > screens.length - 1 ? screens.length - 1 : to);
       if (to === idx) return;
       idx = to;
-      stage.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
+      stage.scrollTo({ top: screens[to].offsetTop, behavior: 'smooth' });
     }
     function goDelta(d) {
       if (lock) return;
